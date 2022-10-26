@@ -8,15 +8,15 @@ import javax.persistence.*
 data class UserEntity(
     @Id
     @GeneratedValue
-    private var id: Long? = null,
-    private var name: String? = null,
+    var id: Long? = null,
+    var name: String? = null,
     @Column(unique = true)
-    private var email: String? = null,
-    private var password: String? = null,
+    var email: String? = null,
+    var password: String? = null,
     @Enumerated(EnumType.STRING)
-    private var type: Type? = null,
+    var type: Type? = null,
     @CreatedDate
-    private var createdAt: OffsetDateTime? = null
+    var createdAt: OffsetDateTime? = null
 ) {
     enum class Type {
         ADMIN, CLIENT
