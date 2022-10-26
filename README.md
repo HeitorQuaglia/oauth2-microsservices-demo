@@ -3,7 +3,5 @@
 ### Generate a new key pair
 
 ```bash
-keytool -genkeypair -alias oauth2 -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore oauth2.p12 -validity 3650
+keytool -genkeypair -alias oauth2 -keyalg RSA -keysize 2048 -keystore oauth2.jks -validity 360
 ```
-
-
