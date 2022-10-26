@@ -1,4 +1,4 @@
-# Demo of a server that provides an OAuth2 authorization code grant flow
+# Demo of a server that provides an OAuth2 authorization
 
 ### Generate a new key pair
 

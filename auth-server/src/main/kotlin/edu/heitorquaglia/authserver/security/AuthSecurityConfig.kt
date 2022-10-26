@@ -64,6 +64,32 @@ class AuthSecurityConfig {
             )
             .build()
 
+        val client = RegisteredClient
+            .withId("2")
+            .clientId("client")
+            .clientSecret(passwordEncoder.encode("password")) //Use a strong password
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+            .redirectUri("http://localhost:3000/authorized") //just simulate a redirect uri in a frontend
+            .scope("myuser:read")
+            .scope("myuser:write")
+            .scope("posts:write")
+            .tokenSettings(
+                TokenSettings
+                    .builder()
+                    .accessTokenTimeToLive(Duration.ofHours(1))
+                    .reuseRefreshTokens(false)
+                    .build()
+            )
+            .clientSettings(
+                ClientSettings
+                    .builder()
+                    .requireAuthorizationConsent(true)
+                    .build()
+            )
+            .build()
+
         return InMemoryRegisteredClientRepository(
             listOf(userClient)
         )
