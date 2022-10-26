@@ -1,5 +1,4 @@
 application-development.properties
-README.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -33,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 .localstack
+/auth-server/src/main/resources/keystore/
