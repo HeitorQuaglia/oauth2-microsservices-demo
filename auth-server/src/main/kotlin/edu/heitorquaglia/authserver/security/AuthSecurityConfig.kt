@@ -4,6 +4,7 @@ import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
+import edu.heitorquaglia.authserver.domain.repository.UserRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -13,6 +14,8 @@ import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
@@ -23,6 +26,8 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer
 import org.springframework.security.web.SecurityFilterChain
 import java.security.KeyStore
 import java.time.Duration
@@ -43,6 +48,29 @@ class AuthSecurityConfig {
         //Add your custom filters here
         http.authorizeRequests().anyRequest().authenticated()
         return http.formLogin(Customizer.withDefaults()).build()
+    }
+
+    @Bean
+    fun jwtEncodingTokenCustomizer(userRepository: UserRepository): OAuth2TokenCustomizer<JwtEncodingContext> {
+        return OAuth2TokenCustomizer { context ->  
+            val authentication = context.getPrincipal<Authentication>()
+
+            if (authentication.principal is User) {
+                val user = authentication.principal as User
+
+                val userEntity = userRepository.findByEmail(user.username!!).orElseThrow()
+
+                val authorities = emptySet<String>()
+
+                for (authority in user.authorities) {
+                    authorities.plus(authority.toString())
+                }
+
+                context.claims.claim("user_id", userEntity.id.toString())
+                context.claims.claim("user_fullname", userEntity.name)
+                context.claims.claim("authorities", authorities)
+            }
+        }
     }
 
     @Bean
@@ -91,7 +119,7 @@ class AuthSecurityConfig {
             .build()
 
         return InMemoryRegisteredClientRepository(
-            listOf(userClient)
+            listOf(userClient, client)
         )
     }
 
