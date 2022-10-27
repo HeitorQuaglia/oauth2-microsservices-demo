@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
 
 @Validated
-@ConfigurationProperties("user-api")
+@ConfigurationProperties("posts.user-api")
 @Component
 data class UserClientProperties(
     val url: String? = null,
