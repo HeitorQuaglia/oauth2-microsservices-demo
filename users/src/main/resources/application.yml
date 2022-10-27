@@ -9,7 +9,9 @@ spring:
       ddl-auto: update
   security:
     oauth2:
-      resource-server:
+      resourceserver:
         jwt:
           issuer-uri: http://localhost:8080 #just for testing
-          #jwk-set-uri: http://localhost:8080/oauth2/jwks #just for testing
+          jwk-set-uri: http://localhost:8080/oauth2/jwks #just for testing
+server:
+  port: 8081
