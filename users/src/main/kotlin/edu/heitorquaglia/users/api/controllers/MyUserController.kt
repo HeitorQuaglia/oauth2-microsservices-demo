@@ -1,4 +1,4 @@
-package edu.heitorquaglia.users.api.controllersResourceNotFoundException
+package edu.heitorquaglia.users.api.controllers
 
 import edu.heitorquaglia.users.api.exceptions.ResourceNotFoundException
 import edu.heitorquaglia.users.api.requests.MyUserRegisterRequest
