@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.*
 
 
@@ -27,9 +28,10 @@ class MyUserController(
 
     @CanReadMyUser
     @GetMapping
-    fun me(@AuthenticationPrincipal userDetails: UserDetails): UserResponse? {
-        val authentication: Authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(userDetails.username)
+    fun me(@AuthenticationPrincipal jwt: Jwt): UserResponse? {
+        val email = jwt.claims["sub"] as String
+
+        return userRepository.findByEmail(email)
             .map(UserResponse::of)
             .orElseThrow { ResourceNotFoundException("Usuário não encontrado.") }
     }
@@ -38,10 +40,12 @@ class MyUserController(
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun update(
-        @AuthenticationPrincipal userDetails: UserDetails,
+        @AuthenticationPrincipal jwt: Jwt,
         @RequestBody request: MyUserUpdateRequest
     ) {
-        val user: UserEntity = userRepository.findByEmail(userDetails.username)
+        val email = jwt.claims["sub"] as String
+
+        val user: UserEntity = userRepository.findByEmail(email)
             .orElseThrow { ResourceNotFoundException("Usuário não encontrado.") }
         request.update(user)
         userRepository.save(user)
@@ -51,10 +55,12 @@ class MyUserController(
     @PutMapping("/update-password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updatePassword(
-        @AuthenticationPrincipal userDetails: UserDetails,
+        @AuthenticationPrincipal jwt: Jwt,
         @RequestBody request: MyUserUpdatePasswordRequest
     ) {
-        val user: UserEntity = userRepository.findByEmail(userDetails.username)
+        val email = jwt.claims["sub"] as String
+
+        val user: UserEntity = userRepository.findByEmail(email)
             .orElseThrow { ResourceNotFoundException("Usuário não encontrado.") }
         user.password = passwordEncoder.encode(request.password)
         userRepository.save(user)
