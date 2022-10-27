@@ -10,5 +10,5 @@ import org.springframework.security.access.prepost.PreAuthorize
     AnnotationTarget.CLASS
 )
 @Retention(AnnotationRetention.RUNTIME)
-@PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
+@PreAuthorize("hasAnyRole('ADMIN','CLIENT') and hasAuthority('SCOPE_myuser:write')")
 annotation class CanEditMyUser

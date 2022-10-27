@@ -37,9 +37,9 @@ class UserSecurityConfig {
     fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
         val converter = JwtAuthenticationConverter()
         converter.setJwtGrantedAuthoritiesConverter { jwt ->
-            val userAuthorities = jwt.claims["authorities"] as List<*>?
+            val userAuthorities = jwt.claims["authorities"] as List<String>? ?: emptyList()
 
-            userAuthorities?.run {
+            userAuthorities.run {
                 val scopesConverter = JwtGrantedAuthoritiesConverter()
 
                 val scopeAuthorities = scopesConverter.convert(jwt)
@@ -47,7 +47,7 @@ class UserSecurityConfig {
                 scopeAuthorities?.apply {
                     addAll(userAuthorities.map { authority -> GrantedAuthority { authority as String } })
                 }
-            } ?: Collections.emptyList()
+            }
         }
         return converter
     }
