@@ -2,12 +2,14 @@ package edu.heitorquaglia.users.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
 import org.springframework.security.web.SecurityFilterChain
+import java.util.*
 
 
 @Configuration
@@ -17,14 +19,36 @@ class UserSecurityConfig {
     @Bean
     @Throws(Exception::class)
     fun securityFilterChain(
-        http: HttpSecurity,
-        userDetailsService: UserDetailsService?
+        http: HttpSecurity
     ): SecurityFilterChain {
-        return http.userDetailsService(userDetailsService)
-            .csrf().disable()
-            .authorizeRequests().anyRequest().authenticated()
+        http.authorizeRequests()
+            .anyRequest()
+            .authenticated()
             .and()
-            .httpBasic(withDefaults())
-            .build()
+            .csrf()
+            .disable()
+            .oauth2ResourceServer()
+            .jwt()
+            .jwtAuthenticationConverter(jwtAuthenticationConverter())
+
+        return http.build()
+    }
+
+    fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
+        val converter = JwtAuthenticationConverter()
+        converter.setJwtGrantedAuthoritiesConverter { jwt ->
+            val userAuthorities = jwt.claims["authorities"] as List<*>?
+
+            userAuthorities?.run {
+                val scopesConverter = JwtGrantedAuthoritiesConverter()
+
+                val scopeAuthorities = scopesConverter.convert(jwt)
+
+                scopeAuthorities?.apply {
+                    addAll(userAuthorities.map { authority -> GrantedAuthority { authority as String } })
+                }
+            } ?: Collections.emptyList()
+        }
+        return converter
     }
 }
