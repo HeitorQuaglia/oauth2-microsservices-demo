@@ -1,4 +1,3 @@
 package edu.heitorquaglia.users.api.requests
 
-class MyUserUpdatePasswordRequest {
-}
+data class MyUserUpdatePasswordRequest(val password: String)

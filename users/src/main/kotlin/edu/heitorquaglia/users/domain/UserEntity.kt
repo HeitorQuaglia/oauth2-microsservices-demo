@@ -11,15 +11,15 @@ import javax.persistence.*
 data class UserEntity(
     @Id
     @GeneratedValue
-    var id: Long,
-    var name: String,
+    var id: Long?,
+    var name: String?,
     @Column(unique = true)
-    var email: String,
-    var password: String,
+    var email: String?,
+    var password: String?,
     @Enumerated(EnumType.STRING)
-    var type: Type,
+    var type: Type?,
     @CreatedDate
-    var createdAt: OffsetDateTime,
+    var createdAt: OffsetDateTime?,
 ) {
     enum class Type {
         ADMIN, CLIENT

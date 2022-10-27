@@ -1,4 +1,4 @@
-package edu.heitorquaglia.users.api.controllers
+package edu.heitorquaglia.users.api.controllersResourceNotFoundException
 
 import edu.heitorquaglia.users.api.exceptions.ResourceNotFoundException
 import edu.heitorquaglia.users.api.requests.MyUserRegisterRequest
@@ -41,7 +41,7 @@ class MyUserController(
         @AuthenticationPrincipal userDetails: UserDetails,
         @RequestBody request: MyUserUpdateRequest
     ) {
-        val user: UserEntity = userRepository.findByEmail(userDetails.getUsername())
+        val user: UserEntity = userRepository.findByEmail(userDetails.username)
             .orElseThrow { ResourceNotFoundException("Usuário não encontrado.") }
         request.update(user)
         userRepository.save(user)
@@ -64,7 +64,7 @@ class MyUserController(
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody request: MyUserRegisterRequest): UserResponse? {
         var user: UserEntity = request.toEntity()
-        user.password = passwordEncoder.encode(request.getPassword())
+        user.password = passwordEncoder.encode(request.password)
         user = userRepository.save(user)
         return UserResponse.of(user)
     }
