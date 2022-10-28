@@ -10,6 +10,7 @@ import edu.heitorquaglia.post.client.UserResponse
 import edu.heitorquaglia.post.domain.Post
 import edu.heitorquaglia.post.domain.repositories.PostRepository
 import edu.heitorquaglia.post.security.SecurityService
+import edu.heitorquaglia.post.security.annotations.CanWritePosts
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -37,7 +38,8 @@ class PostController(
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) //TODO Implementar segurança
+    @ResponseStatus(HttpStatus.CREATED)
+    @CanWritePosts
     //@CanCreatePost
     fun create(@RequestBody postRequest: PostRequest): PostDetailedResponse? {
         val post = Post(editorId = securityService.userId, title = postRequest.title, content = postRequest.content)
