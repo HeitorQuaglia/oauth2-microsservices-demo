@@ -6,6 +6,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.oauth2.client.AuthorizationCodeOAuth2AuthorizedClientProvider
+import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
 import org.springframework.security.web.SecurityFilterChain
@@ -51,5 +57,33 @@ class PostSecurityConfig {
                     }
                 }
             }
+    }
+
+    @Bean
+    fun oAuth2AuthorizedClientService(
+        clientRegistrationRepository: ClientRegistrationRepository
+    ): OAuth2AuthorizedClientService {
+        return InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository)
+    }
+
+    @Bean
+    fun clientManager(
+        clientRegistrationRepository: ClientRegistrationRepository,
+        auth2AuthorizedClientService: OAuth2AuthorizedClientService
+    ) : AuthorizationCodeOAuth2AuthorizedClientProvider {
+        val authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder
+            .builder()
+            .clientCredentials()
+            .build()
+
+        val clientManager = AuthorizedClientServiceOAuth2AuthorizedClientManager(
+            clientRegistrationRepository,
+            auth2AuthorizedClientService
+        )
+
+        clientManager.setAuthorizedClientProvider(authorizedClientProvider)
+
+
+        return clientManager
     }
 }
