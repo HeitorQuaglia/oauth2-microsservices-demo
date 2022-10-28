@@ -16,7 +16,7 @@ class RestTemplateConfig {
     @Bean
     fun restTemplate(builder: RestTemplateBuilder, properties: UserClientProperties): RestTemplate {
         return builder.additionalRequestCustomizers(RestTemplateRequestCustomizer { request: ClientHttpRequest ->
-            request.headers.setBasicAuth(properties.encodedCredentials)
+            request.headers.setBasicAuth(properties.encodedCredentials!!)
         }).build()
     }
 }

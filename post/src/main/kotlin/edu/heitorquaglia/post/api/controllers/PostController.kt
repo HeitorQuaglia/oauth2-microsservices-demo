@@ -8,7 +8,7 @@ import edu.heitorquaglia.post.api.responses.PostSummaryResponse
 import edu.heitorquaglia.post.client.UserClient
 import edu.heitorquaglia.post.client.UserResponse
 import edu.heitorquaglia.post.domain.Post
-import edu.heitorquaglia.post.domain.repositories.PostRepository
+import edu.heitorquaglia.post.domain.PostRepository
 import edu.heitorquaglia.post.security.SecurityService
 import edu.heitorquaglia.post.security.annotations.CanWritePosts
 import org.springframework.data.domain.Page

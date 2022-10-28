@@ -5,7 +5,7 @@ import edu.heitorquaglia.users.api.requests.UserRequest
 import edu.heitorquaglia.users.api.requests.UserUpdateRequest
 import edu.heitorquaglia.users.api.responses.UserResponse
 import edu.heitorquaglia.users.domain.UserEntity
-import edu.heitorquaglia.users.domain.repository.UserRepository
+import edu.heitorquaglia.users.domain.UserRepository
 import edu.heitorquaglia.users.security.annotations.CanReadUsers
 import edu.heitorquaglia.users.security.annotations.CanWriteUsers
 import org.springframework.data.domain.Page;

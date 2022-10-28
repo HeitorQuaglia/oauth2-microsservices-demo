@@ -22,7 +22,9 @@ spring:
           client-name: posts-client
         provider:
           auth:
-            issuer-uri: http://localhost:8082
+            authorization-uri: http://localhost:8082/oauth2/auth
+            token-uri: http://localhost:8080/oauth/token
+            issuer-uri: http://localhost:8080
 
 server:
   port: 8082

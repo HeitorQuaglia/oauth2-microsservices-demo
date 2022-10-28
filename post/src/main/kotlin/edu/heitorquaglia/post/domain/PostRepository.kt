@@ -1,6 +1,7 @@
-package edu.heitorquaglia.post.domain.repositories
+package edu.heitorquaglia.post.domain
 
-import edu.heitorquaglia.post.domain.Post
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
+@Repository
 interface PostRepository : JpaRepository<Post, Long>

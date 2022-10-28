@@ -3,6 +3,7 @@ package edu.heitorquaglia.post.domain
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.OffsetDateTime
+import java.util.*
 import javax.persistence.Entity
 import javax.persistence.EntityListeners
 import javax.persistence.GeneratedValue

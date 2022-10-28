@@ -70,7 +70,7 @@ class PostSecurityConfig {
     fun clientManager(
         clientRegistrationRepository: ClientRegistrationRepository,
         auth2AuthorizedClientService: OAuth2AuthorizedClientService
-    ) : AuthorizationCodeOAuth2AuthorizedClientProvider {
+    ) : AuthorizedClientServiceOAuth2AuthorizedClientManager {
         val authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder
             .builder()
             .clientCredentials()

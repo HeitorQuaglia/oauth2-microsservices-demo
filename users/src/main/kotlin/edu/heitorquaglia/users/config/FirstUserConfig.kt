@@ -1,7 +1,7 @@
 package edu.heitorquaglia.users.config
 
 import edu.heitorquaglia.authserver.domain.UserEntity
-import edu.heitorquaglia.authserver.domain.repository.UserRepository
+import edu.heitorquaglia.authserver.repositories.UserRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments

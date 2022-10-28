@@ -1,4 +1,4 @@
-package edu.heitorquaglia.authserver.domain.repository
+package edu.heitorquaglia.authserver.repositories
 
 import edu.heitorquaglia.authserver.domain.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository

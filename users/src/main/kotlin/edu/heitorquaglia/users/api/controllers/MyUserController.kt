@@ -6,14 +6,11 @@ import edu.heitorquaglia.users.api.requests.MyUserUpdatePasswordRequest
 import edu.heitorquaglia.users.api.requests.MyUserUpdateRequest
 import edu.heitorquaglia.users.api.responses.UserResponse
 import edu.heitorquaglia.users.domain.UserEntity
-import edu.heitorquaglia.users.domain.repository.UserRepository
+import edu.heitorquaglia.users.domain.UserRepository
 import edu.heitorquaglia.users.security.annotations.CanEditMyUser
 import edu.heitorquaglia.users.security.annotations.CanReadMyUser
 import org.springframework.http.HttpStatus
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.*

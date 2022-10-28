@@ -1,6 +1,5 @@
-package edu.heitorquaglia.users.domain.repository
+package edu.heitorquaglia.users.domain
 
-import edu.heitorquaglia.users.domain.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
