@@ -7,13 +7,12 @@ spring:
     show-sql: 'true'
     hibernate:
       ddl-auto: none
-
 server:
-  port: 8080
+  port: 8082
 
 oauth: #just for testing
   auth:
-    provider-uri: "http://localhost:8080"
+    provider-uri: "http://localhost:8082"
     jks:
       keypass: "password"
       storepass: "password"
