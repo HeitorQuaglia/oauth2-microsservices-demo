@@ -1,12 +1,10 @@
 package edu.heitorquaglia.post.config
 
-import edu.heitorquaglia.post.client.UserClientProperties
-
 import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.boot.web.client.RestTemplateRequestCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.client.ClientHttpRequest
+import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest
 
 import org.springframework.web.client.RestTemplate
 
@@ -14,9 +12,16 @@ import org.springframework.web.client.RestTemplate
 @Configuration
 class RestTemplateConfig {
     @Bean
-    fun restTemplate(builder: RestTemplateBuilder, properties: UserClientProperties): RestTemplate {
-        return builder.additionalRequestCustomizers(RestTemplateRequestCustomizer { request: ClientHttpRequest ->
-            request.headers.setBasicAuth(properties.encodedCredentials!!)
+    fun restTemplate(builder: RestTemplateBuilder, clientManager: AuthorizedClientServiceOAuth2AuthorizedClientManager): RestTemplate {
+        return builder.additionalRequestCustomizers({ request ->
+            val auth2AuthorizeRequest = OAuth2AuthorizeRequest
+                .withClientRegistrationId("posts-registration")
+                .principal("PostService")
+                .build()
+
+            clientManager.authorize(auth2AuthorizeRequest)?.accessToken?.tokenValue?.run {
+                request.headers.setBearerAuth(this)
+            }
         }).build()
     }
 }

@@ -14,12 +14,13 @@ spring:
           issuer-uri: http://localhost:8082
       client:
         registration:
-          provider: auth
-          client-id: ""
-          client-secret: ""
-          authorization-grant-type: client_credentials
-          scope: users:read
-          client-name: posts-client
+          posts-registration:
+            provider: auth
+            client-id: ""
+            client-secret: ""
+            authorization-grant-type: client_credentials
+            scope: users:read
+            client-name: posts-client
         provider:
           auth:
             authorization-uri: http://localhost:8082/oauth2/auth
